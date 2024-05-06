@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container ">
+        <h2>Django TO DO LIST</h2>
+        <div class="row">
+            <div class="col-sm-5 ">
+                <form action="{% url 'create_todo'%}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="Task">TASK</label>
+                        <input type="text" class="form-control" id="Task" name='task' placeholder="Enter your Task">
+                    </div>
+                    <div class="form-group">
+                        <label for="Description">DISCRIPTION</label>
+                        <input type="text" class="form-control" id="Description" name="description" placeholder="Enter your task Description">
+                    </div>
+                
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+
+            </div>
+
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>SNo.</th>
+                    <th>Task</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for todo in todos %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ todo.task }}</td>
+                    <td>{{ todo.description }}</td>
+                    <td>
+                        {% if todo.completed %}
+                        <span class="btn btn-success">completed</span>
+                        {% else %}
+                        <a class="btn btn-warning" href="{% url 'complete_todo' todo.id %}">complete</a>
+                        {% endif %}
+                        <a class="btn btn-danger" href="{% url 'delete_todo' todo.id %}">delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+        
+        
+    </div>
+
+</body>
+
+</html>
